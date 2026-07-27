@@ -57,9 +57,14 @@ strip() {
   done
 }
 
+# Names and captions track the EXIF: Mulki (Feb 2026), Himachal (May 2026),
+# Western Ghats (Jul 2026). Captions live in src/app/about/page.tsx.
 strip "$SRC/IMG_0404 3.JPG" life-surf center
-strip "$SRC/IMG_4094 2.jpg" life-trek north
 strip "$SRC/IMG_1523 3.jpg" life-rest center
+strip "$SRC/IMG_3223 2.jpg" life-stream center
+strip "$SRC/IMG_3927 2.jpg" life-mist center
+strip "$SRC/IMG_4094 2.jpg" life-falls north
+strip "$SRC/IMG_4154 2.jpg" life-shrine center
 
 echo "wrote:"
 ls -la "$OUT"

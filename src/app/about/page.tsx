@@ -11,10 +11,44 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 }
 
+// Places and dates come from each photo's EXIF, not from memory.
 const lifePhotos = [
-  { name: 'life-surf', alt: 'Pavan with a surfboard on the beach at Mulki' },
-  { name: 'life-trek', alt: 'Pavan on a monsoon trek in front of a waterfall' },
-  { name: 'life-rest', alt: 'Pavan resting in a hammock' },
+  {
+    name: 'life-surf',
+    caption: 'Board, no waves yet',
+    place: 'Mulki, Karnataka · Feb 2026',
+    alt: 'Pavan standing on the beach beside a longboard',
+  },
+  {
+    name: 'life-rest',
+    caption: 'An hour off',
+    place: 'Mulki, Karnataka · Feb 2026',
+    alt: 'Pavan lying in a hammock on the sand',
+  },
+  {
+    name: 'life-stream',
+    caption: 'By the water',
+    place: 'Himachal Pradesh · May 2026',
+    alt: 'Pavan sitting on rocks beside a hill stream',
+  },
+  {
+    name: 'life-mist',
+    caption: 'Zero visibility',
+    place: 'Western Ghats · Jul 2026',
+    alt: 'Pavan and two friends on a ridge swallowed by monsoon cloud',
+  },
+  {
+    name: 'life-falls',
+    caption: 'Monsoon falls',
+    place: 'Kalsubai, Maharashtra · Jul 2026',
+    alt: 'Pavan on a trail with waterfalls running down the hillside behind him',
+  },
+  {
+    name: 'life-shrine',
+    caption: 'Kalsubai Devi temple',
+    place: 'Kalsubai, Maharashtra · Jul 2026',
+    alt: 'Pavan at a small painted hilltop temple',
+  },
 ]
 
 export default function AboutPage() {
@@ -40,23 +74,28 @@ export default function AboutPage() {
         <Reveal className="flex flex-col gap-8">
           <p className="eyebrow">Away from the screen</p>
           <p className="max-w-measure text-muted">
-            I run three mornings a week, lift six days, and spend as much leave as I can on the
-            coast or in the hills. Surfing at Mulki and monsoon treks are the current habit.
+            I run three mornings a week and lift six days. The rest of my leave goes to the coast
+            or the hills — Mulki for the surf, the Ghats once the monsoon starts.
           </p>
-          <div className="grid grid-cols-3 gap-3 sm:gap-6">
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
             {lifePhotos.map((photo) => (
-              <Photo
-                key={photo.name}
-                name={photo.name}
-                widths={[480, 800]}
-                alt={photo.alt}
-                sizes="(max-width: 640px) 30vw, 320px"
-                width={800}
-                height={1000}
-                className="w-full rounded-card border border-line object-cover"
-              />
+              <li key={photo.name} className="flex flex-col gap-3">
+                <Photo
+                  name={photo.name}
+                  widths={[480, 800]}
+                  alt={photo.alt}
+                  sizes="(max-width: 640px) 45vw, 320px"
+                  width={800}
+                  height={1000}
+                  className="w-full rounded-card border border-line object-cover"
+                />
+                <div className="flex flex-col gap-1">
+                  <span className="text-small text-cream">{photo.caption}</span>
+                  <span className="text-micro uppercase text-muted">{photo.place}</span>
+                </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </Reveal>
       </section>
 
