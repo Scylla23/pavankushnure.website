@@ -6,11 +6,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Sun, Moon, Github, Linkedin, Instagram, FileText } from 'lucide-react';
 import { XIcon } from '@/components/ui/XIcon';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import { useAmbience } from '@/context/AmbienceContext';
+import RotatingText from '@/components/RotatingText';
+
+const ROLES = [
+  'Lead AI Engineer @ Bravent LLC',
+  'on the daily grind',
+  'building in public',
+  'LLM gateways, guardrails, agents',
+];
 
 export default function Header() {
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const { scene } = useAmbience();
 
   const socialLinks = [
     {
@@ -97,16 +107,29 @@ export default function Header() {
     >
       {/* Banner */}
       <div className="relative w-full h-[200px] sm:h-[270px] rounded-2xl overflow-hidden mb-[-40px] sm:mb-[-50px] z-0">
-        <Image
-          src="/banner.jpg"
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
+        {/* Crossfades with the soundscape picked in the player. */}
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={scene.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={scene.photo}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
         <div className="absolute inset-0 flex items-center justify-center bg-black/20">
           <p className="text-white text-base sm:text-xl italic font-serif text-center drop-shadow-md px-4">
-            The biggest risk is not taking any risk.
+            {scene.caption}
           </p>
         </div>
       </div>
@@ -133,25 +156,26 @@ export default function Header() {
         </div>
 
         <div className="mt-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-3xl sm:text-5xl font-bold italic text-black dark:text-white font-[family-name:var(--font-instrument-serif)] tracking-wider">
+          {/* One line at every width: the name shrinks, the location truncates. */}
+          <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+            <h1 className="shrink-0 text-lg sm:text-4xl font-bold italic text-black dark:text-white font-[family-name:var(--font-instrument-serif)] tracking-wide whitespace-nowrap">
               Pavan Kushnure
             </h1>
 
-            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="text-blue-500 w-6 h-6 sm:w-7 sm:h-7" xmlns="http://www.w3.org/2000/svg">
+            <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" className="shrink-0 text-blue-500 w-4 h-4 sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg">
               <path fill="none" d="M0 0h24v24H0z"></path>
               <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"></path>
             </svg>
 
-            <div className="md:text-xl text-lg font-[family-name:var(--font-instrument-serif)] tracking-wider dark:text-zinc-400 text-zinc-600 font-light mt-1 sm:mt-2">
+            <div className="truncate text-[10px] sm:text-base font-[family-name:var(--font-instrument-serif)] tracking-normal sm:tracking-wide dark:text-zinc-400 text-zinc-600 font-light">
               | Wardha, India 🇮🇳
             </div>
           </div>
 
           <div className="mt-2">
-            <p className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400 font-[family-name:var(--font-instrument-serif)] tracking-wider text-sm h-6">
-              Lead AI Engineer @ Bravent LLC
-            </p>
+            <div className="overflow-hidden text-zinc-600 dark:text-zinc-400 font-[family-name:var(--font-instrument-serif)] tracking-wider text-sm h-6 leading-6">
+              <RotatingText items={ROLES} />
+            </div>
           </div>
         </div>
 

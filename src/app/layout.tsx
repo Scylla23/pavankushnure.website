@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { AmbienceProvider } from '@/context/AmbienceContext'
+import { BackgroundMusic } from '@/components'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
@@ -142,7 +144,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased min-h-screen transition-colors duration-200">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AmbienceProvider>
+            {children}
+            <BackgroundMusic />
+          </AmbienceProvider>
+        </ThemeProvider>
         <Script
           id="person-schema"
           type="application/ld+json"

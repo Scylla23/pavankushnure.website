@@ -10,3 +10,5 @@ export { default as ProjectCard } from './ProjectCard';
 export { default as ProjectDetailClient } from './ProjectDetailClient';
 export { default as FadeIn } from './FadeIn';
 export { default as GithubHeatmap } from './GithubHeatmap';
+export { default as BackgroundMusic } from './BackgroundMusic';
+export { default as RotatingText } from './RotatingText';
