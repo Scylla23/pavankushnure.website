@@ -111,6 +111,8 @@ export const projects: Project[] = [
     technologies: ["Node.js", "Express", "React", "MongoDB", "Redis", "Docker", "Terraform", "GCP"],
     thumbnail: "/thumbnails/featuregate.jpg",
     links: {
+      // http, not https: the domain serves a *.github.io cert, so https fails to load.
+      visit: "http://featuregate.online/",
       source: "https://github.com/Scylla23/featuregate"
     }
   },
@@ -170,18 +172,6 @@ export const projects: Project[] = [
       visit: "https://modelrouter-landing.vercel.app",
       source: "https://github.com/Scylla23/modelrouter"
     }
-  },
-  {
-    title: "docsyntra",
-    slug: "docsyntra",
-    description: "Converts legacy PDFs, Word and HTML into structured DITA XML for federal agencies, so decades of documentation becomes machine-readable.",
-    longDescription: [
-      "Converts legacy PDFs, Word and HTML into structured DITA XML for federal agencies, so decades of documentation becomes machine-readable."
-    ],
-    features: [],
-    technologies: ["Python", "Document AI", "DITA XML"],
-    thumbnail: "/thumbnails/docsyntra.jpg",
-    links: {}
   },
   {
     title: "ModelDuet",

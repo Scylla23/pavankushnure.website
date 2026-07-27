@@ -46,9 +46,8 @@ every project also gets its own page at `/projects/<slug>`.
 playwright screenshot --viewport-size=1440,900 --wait-for-timeout=6000 <url> <out.png>
 ```
 
-Three projects have no usable screenshot (ProposalIQ sits behind auth, docsyntra
-has no public site, ModelDuet is a repo) and use a generated typographic card
-instead.
+Two projects have no usable screenshot (ProposalIQ sits behind auth, ModelDuet
+is a repo) and use a generated typographic card instead.
 
 ## Deploying
 
