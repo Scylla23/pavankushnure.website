@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Tokens — DESIGN.md §6. No pure #fff, no pure #000 in UI.
+   ============================================================ */
+:root {
+  --color-canvas: #100904;
+  --color-text: #ffedd7;
+  --color-text-muted: #a3907c; /* D12: original #6c5f51 failed AA on canvas */
+  --color-text-dim: #6c5f51; /* decorative only */
+  --color-surface: #382416;
+  --color-surface-2: #201409; /* between canvas and surface, for media frames */
+  --color-border: #40372e;
+  --color-accent: #dc5000;
+  --color-accent-hover: #ff6316;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-text);
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Single ambient ember glow, top-right. Depth without shadows (D13). */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(120vw 80vh at 100% -10%, rgba(220, 80, 0, 0.1), transparent 60%),
+      radial-gradient(90vw 60vh at -10% 110%, rgba(56, 36, 22, 0.55), transparent 55%);
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-container px-6;
+  }
+
+  /* Uppercase museum-label micro-type — the ORYZO feel in Inter. */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-label uppercase text-ember;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 28px;
+    border-top: 1px dashed var(--color-accent);
+  }
+
+  /* Dashed hairline only — never solid, never >2px (DESIGN.md §4). */
+  .rule {
+    @apply border-0 border-t border-dashed border-line;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-pill border border-transparent
+           text-[15px] font-medium leading-none no-underline
+           transition-colors duration-200;
+    padding: 14px 24px;
+  }
+  .btn-primary {
+    @apply bg-ember text-white hover:bg-ember-hover;
+  }
+  .btn-ghost {
+    @apply border-cream text-cream hover:border-ember hover:text-ember;
+    border-radius: 24px;
+    padding: 12px 22px;
+  }
+
+  .tag {
+    @apply inline-flex items-center rounded-pill border border-line
+           px-3 py-1 text-micro uppercase text-muted;
+  }
+
+  .link-ember {
+    @apply text-ember underline-offset-4 hover:underline;
+  }
+}
+
+/* ---- Scroll reveal (D14) ------------------------------------
+   Content is visible by default. It is only hidden once JS has
+   set `html.js`, so no-JS visitors and crawlers see everything.
+   ------------------------------------------------------------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
