@@ -1,84 +1,153 @@
 import type { Metadata } from 'next'
-import { inter } from '@/lib/fonts'
-import { Nav } from '@/components/Nav'
-import { Footer } from '@/components/Footer'
-import { site, socials, experience } from '@/data/profile'
 import './globals.css'
+import { ThemeProvider } from '@/context/ThemeContext'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL('https://pavankushnure.website'),
+
   title: {
-    default: 'Pavan Kushnure — AI Engineer for Remote US Startups',
+    default: 'Pavan Kushnure | Lead AI Engineer',
     template: '%s | Pavan Kushnure',
   },
   description:
-    'AI engineer building AI-powered SaaS — 3+ years, from LLM gateways and runtime guardrails to RAG and vector search. Working remotely with US startups.',
-  alternates: { canonical: '/' },
+    'Pavan Kushnure — Lead AI Engineer at Bravent LLC. LLM gateways, runtime guardrails, agentic workflow platforms, and full-stack SaaS with TypeScript, Python and Next.js. Remote from Maharashtra, India.',
+  keywords: [
+    'Pavan Kushnure',
+    'Pavankumar Kushnure',
+    'pavankushnure.website',
+    'portfolio',
+    'AI engineer',
+    'LLM gateway',
+    'LLM guardrails',
+    'agentic workflows',
+    'MCP',
+    'RAG',
+    'full-stack developer',
+    'Next.js developer',
+    'TypeScript developer',
+    'Node.js developer',
+    'India developer',
+  ],
+  authors: [{ name: 'Pavan Kushnure', url: 'https://pavankushnure.website' }],
+  creator: 'Pavan Kushnure',
+
   openGraph: {
     type: 'website',
-    siteName: site.name,
-    url: site.url,
-    title: 'Pavan Kushnure — AI Engineer for Remote US Startups',
+    locale: 'en_IN',
+    url: 'https://pavankushnure.website',
+    siteName: 'Pavan Kushnure Portfolio',
+    title: 'Pavan Kushnure | Lead AI Engineer',
     description:
-      'AI engineer building AI-powered SaaS — 3+ years, from LLM gateways and runtime guardrails to RAG and vector search.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Pavan Kushnure — Lead AI Engineer' }],
+      'LLM gateways, runtime guardrails, and agentic workflow platforms. Lead AI Engineer at Bravent LLC, remote from India.',
+    images: [
+      {
+        url: '/banner.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Pavan Kushnure — Lead AI Engineer',
+      },
+    ],
   },
+
   twitter: {
     card: 'summary_large_image',
+    title: 'Pavan Kushnure | Lead AI Engineer',
+    description:
+      'LLM gateways, runtime guardrails, and agentic workflow platforms. Lead AI Engineer at Bravent LLC.',
     creator: '@pavankushnure',
-    images: ['/og.png'],
+    images: ['/banner.jpg'],
   },
-  robots: { index: true, follow: true },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+
+  alternates: {
+    canonical: 'https://pavankushnure.website',
+  },
+
+  icons: {
+    icon: '/avatar.jpg',
+    shortcut: '/avatar.jpg',
+    apple: '/avatar.jpg',
+  },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: site.name,
-  url: site.url,
-  email: `mailto:${site.email}`,
-  jobTitle: site.role,
-  worksFor: { '@type': 'Organization', name: site.company },
-  address: { '@type': 'PostalAddress', addressLocality: 'Nagpur', addressCountry: 'IN' },
+  name: 'Pavan Kushnure',
+  url: 'https://pavankushnure.website',
+  jobTitle: 'Lead AI Engineer',
+  description:
+    'Full-stack engineer with 3+ years building SaaS products — LLM gateways, runtime guardrails, agentic workflow platforms, and search at scale.',
+  image: 'https://pavankushnure.website/avatar.jpg',
+  email: 'pavankushnure2000@gmail.com',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Bravent LLC',
+  },
+  sameAs: [
+    'https://github.com/Scylla23',
+    'https://linkedin.com/in/pavankushnure',
+    'https://x.com/pavankushnure',
+    'https://instagram.com/pavankushnure',
+  ],
+  knowsAbout: [
+    'TypeScript',
+    'Python',
+    'React',
+    'Next.js',
+    'Node.js',
+    'FastAPI',
+    'LLM Guardrails',
+    'Agentic Workflows',
+    'MCP',
+    'RAG',
+    'MongoDB',
+    'PostgreSQL',
+    'GCP',
+  ],
   alumniOf: {
     '@type': 'CollegeOrUniversity',
     name: 'Shri Guru Gobind Singhji Institute of Engineering and Technology, Nanded',
   },
-  knowsAbout: ['AI engineering', 'RAG', 'Vector search', 'LLM guardrails', 'Model Context Protocol', 'React', 'Node.js', 'Python'],
-  sameAs: socials.map((s) => s.href),
-  hasOccupation: experience.map((job) => ({
-    '@type': 'Role',
-    roleName: job.role,
-    startDate: job.start,
-  })),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Wardha',
+    addressRegion: 'Maharashtra',
+    addressCountry: 'IN',
+  },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" className={inter.variable}>
-      <head>
-        {/* Sets html.js before paint so the reveal CSS can hide things.
-            Without JS the class never lands and all content stays visible (D14). */}
-        <script
-          dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add('js')` }}
-        />
-        <script
+    <html lang="en">
+      <body className="antialiased min-h-screen transition-colors duration-200">
+        <ThemeProvider>{children}</ThemeProvider>
+        <Script
+          id="person-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
-      </head>
-      <body className="font-sans">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-pill focus:bg-ember focus:px-4 focus:py-2 focus:text-small focus:text-white"
-        >
-          Skip to content
-        </a>
-        <Nav />
-        <main id="main" className="relative z-10 pt-20">
-          {children}
-        </main>
-        <Footer />
       </body>
     </html>
   )

@@ -1,41 +1,42 @@
-import Link from 'next/link'
-import { site, socials } from '@/data/profile'
-import { socialIcons } from './Icons'
+'use client';
 
-export function Footer() {
+import { useState, useEffect } from 'react';
+
+export default function Footer() {
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(new Date().toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Kolkata'
+      }));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <footer className="mt-24 border-t border-dashed border-line">
-      <div className="container-page flex flex-col gap-6 py-12 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-2">
-          <Link href="/" className="text-label uppercase text-cream no-underline hover:text-ember">
-            {site.name}
-          </Link>
-          <a href={`mailto:${site.email}`} className="link-ember text-small">
-            {site.email}
-          </a>
+    <footer className="pt-8 mt-8 pb-2 border-t border-zinc-200 dark:border-zinc-800">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-zinc-500 dark:text-zinc-500">
+        <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
+          <p className="text-zinc-600 dark:text-zinc-400">Built by Pavan Kushnure</p>
+          <span className="hidden sm:inline text-zinc-300 dark:text-zinc-700">•</span>
+          <p>© 2026 All rights reserved.</p>
         </div>
 
-        <ul className="flex items-center gap-5">
-          {socials.map(({ label, href }) => {
-            const Icon = socialIcons[label]
-            return (
-              <li key={label}>
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={label}
-                  className="block text-muted transition-colors hover:text-ember"
-                >
-                  <Icon />
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-
-        <p className="text-micro uppercase text-muted">Open to opportunities</p>
+        <div className="flex items-center gap-2 font-mono">
+          <span>🇮🇳</span>
+          <span>Wardha, India</span>
+          <span className="text-zinc-300 dark:text-zinc-700">•</span>
+          <span className="text-zinc-600 dark:text-zinc-400">{time || '--:--'}</span>
+        </div>
       </div>
     </footer>
-  )
+  );
 }

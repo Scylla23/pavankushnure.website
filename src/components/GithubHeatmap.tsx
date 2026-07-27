@@ -1,115 +1,155 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { site } from '@/data/profile'
+import { useEffect, useState } from 'react';
 
-type Day = { date: string; count: number }
+type Contribution = {
+  date: string;
+  count: number;
+  level: number;
+};
 
-const ENDPOINT = `https://github-contributions-api.jogruber.de/v4/${site.githubUser}?y=last`
+type GithubData = {
+  total: {
+    [year: string]: number;
+  };
+  contributions: Contribution[];
+};
 
-/** Local-midnight parse. `new Date('2025-07-27')` is UTC and shifts the weekday west of GMT. */
-function weekday(iso: string): number {
-  const [y, m, d] = iso.split('-').map(Number)
-  return new Date(y, m - 1, d).getDay()
-}
-
-/**
- * The API's own `level` is compressed — a 25-commit day comes back as level 1.
- * Quartiles over the non-zero days give a grid that reflects the actual spread.
- */
-function levelScale(days: Day[]): (count: number) => number {
-  const nonZero = days.filter((d) => d.count > 0).map((d) => d.count).sort((a, b) => a - b)
-  if (nonZero.length === 0) return () => 0
-  const at = (q: number) => nonZero[Math.min(nonZero.length - 1, Math.floor(nonZero.length * q))]
-  const [q1, q2, q3] = [at(0.25), at(0.5), at(0.75)]
-  return (count) => {
-    if (count <= 0) return 0
-    if (count <= q1) return 1
-    if (count <= q2) return 2
-    if (count <= q3) return 3
-    return 4
-  }
-}
-
-const FILL = [
-  'rgba(64,55,46,0.45)', // empty — cork, barely there
-  'rgba(220,80,0,0.28)',
-  'rgba(220,80,0,0.52)',
-  'rgba(220,80,0,0.76)',
-  'rgba(255,99,22,1)',
-]
-
-export function GithubHeatmap() {
-  const [days, setDays] = useState<Day[] | null>(null)
-  const [total, setTotal] = useState<number | null>(null)
-  const [failed, setFailed] = useState(false)
+export default function GithubHeatmap() {
+  const [data, setData] = useState<GithubData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const ac = new AbortController()
-    fetch(ENDPOINT, { signal: ac.signal })
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((data) => {
-        if (!Array.isArray(data?.contributions)) throw new Error('unexpected shape')
-        setDays(data.contributions)
-        setTotal(data?.total?.lastYear ?? null)
+    fetch('https://github-contributions-api.jogruber.de/v4/Scylla23?y=last')
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+        setLoading(false);
       })
       .catch((err) => {
-        if (err?.name !== 'AbortError') setFailed(true)
-      })
-    return () => ac.abort()
-  }, [])
+        console.error('Failed to fetch github contributions', err);
+        setLoading(false);
+      });
+  }, []);
 
-  // The only third-party request the site makes. If it fails, the section
-  // simply is not there — never a broken box.
-  if (failed || !days) return null
+  const getLevelColor = (level: number) => {
+    switch (level) {
+      case 1:
+        return 'bg-emerald-200 dark:bg-emerald-900/70';
+      case 2:
+        return 'bg-emerald-300 dark:bg-emerald-700/80';
+      case 3:
+        return 'bg-emerald-400 dark:bg-emerald-500/90';
+      case 4:
+        return 'bg-emerald-500 dark:bg-emerald-400';
+      default:
+        return 'bg-zinc-100 dark:bg-zinc-800/40';
+    }
+  };
 
-  const toLevel = levelScale(days)
-  const pad = weekday(days[0].date)
+  const currentYearTotal = data?.total?.lastYear || 0;
+  const startOffset = data?.contributions?.length ? new Date(data.contributions[0].date).getDay() : 0;
+
+  const getMonthLabels = () => {
+    if (!data?.contributions.length) return [];
+    const labels: { label: string; index: number }[] = [];
+    let currentMonth = -1;
+
+    data.contributions.forEach((day, i) => {
+      const date = new Date(day.date);
+      const month = date.getMonth();
+      if (month !== currentMonth) {
+        if (i > 15 || labels.length === 0) {
+          labels.push({
+            label: date.toLocaleString('default', { month: 'short' }),
+            index: Math.floor((i + startOffset) / 7),
+          });
+        }
+        currentMonth = month;
+      }
+    });
+    return labels;
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="text-small text-muted">
-          {total !== null && (
-            <>
-              <span className="font-medium text-cream">{total.toLocaleString()}</span> contributions
-              in the last year
-            </>
-          )}
-        </p>
-        <a
-          href={`https://github.com/${site.githubUser}`}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="link-ember text-small"
-        >
-          @{site.githubUser} <span aria-hidden>↗</span>
-        </a>
+    <section className="mb-16">
+      <div className="flex flex-col sm:flex-row items-baseline gap-2 mb-6">
+        <h2 id="contributions-heading" className="text-lg font-bold text-black dark:text-white flex items-center gap-2">
+          GitHub Contributions <span className="text-zinc-400 font-normal">#</span>
+        </h2>
       </div>
 
-      <div className="overflow-x-auto pb-2">
-        <div
-          className="grid w-max grid-flow-col grid-rows-7 gap-[3px]"
-          role="img"
-          aria-label={`GitHub contribution graph: ${total ?? 'many'} contributions in the last year`}
-        >
-          {Array.from({ length: pad }, (_, i) => (
-            <span key={`pad-${i}`} className="h-[11px] w-[11px]" />
-          ))}
-          {days.map((d) => (
-            <span
-              key={d.date}
-              title={`${d.count} on ${d.date}`}
-              className="h-[11px] w-[11px] rounded-[2px]"
-              style={{ backgroundColor: FILL[toLevel(d.count)] }}
-            />
-          ))}
+      <div className="w-full">
+        <div>
+          {loading ? (
+            <div className="animate-pulse bg-zinc-200 dark:bg-zinc-800/40 rounded-xl h-32 w-full"></div>
+          ) : (
+            data?.contributions && (
+              <div
+                className="flex overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                style={{ direction: 'rtl' }}
+              >
+                <div
+                  className="inline-flex flex-col"
+                  style={{ direction: 'ltr' }}
+                >
+                  <div className="relative h-5 text-[10px] text-zinc-500 dark:text-zinc-500 mb-1">
+                    {getMonthLabels().map((m, i) => (
+                      <span
+                        key={i}
+                        className="absolute"
+                        style={{ left: `${m.index * 15}px`, bottom: 0 }}
+                      >
+                        {m.label}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-rows-7 grid-flow-col gap-[3px] sm:gap-[4px]">
+                    {Array.from({ length: startOffset }).map((_, i) => (
+                      <div
+                        key={`empty-${i}`}
+                        className="w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] rounded-sm"
+                      />
+                    ))}
+                    {data.contributions.map((day) => (
+                      <div
+                        key={day.date}
+                        className={`w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] rounded-sm ${getLevelColor(
+                          day.level
+                        )}`}
+                        title={`${day.count} contributions on ${new Date(
+                          day.date
+                        ).toDateString()}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          )}
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-5 gap-4 sm:gap-0">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            {loading ? '...' : `${currentYearTotal} contributions in the last year`}
+          </span>
+          <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-500">
+            <span>Less</span>
+            <div className="flex gap-[3px]">
+              {[0, 1, 2, 3, 4].map((level) => (
+                <div
+                  key={level}
+                  className={`w-[12px] h-[12px] rounded-sm ${getLevelColor(
+                    level
+                  )}`}
+                />
+              ))}
+            </div>
+            <span>More</span>
+          </div>
         </div>
       </div>
-
-      <p className="text-micro uppercase text-muted">
-        Most of this lands in private work repos, so the public graph runs light
-      </p>
-    </div>
-  )
+    </section>
+  );
 }

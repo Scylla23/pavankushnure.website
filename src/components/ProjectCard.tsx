@@ -1,44 +1,34 @@
-import Link from 'next/link'
-import type { Project } from '@/data/projects'
+'use client';
 
-/** Depth is the canvas→surface step, never a shadow (DESIGN.md §1). */
-export function ProjectCard({ project }: { project: Project }) {
-  const { slug, name, tagline, description, tech, links, detail } = project
+import Link from 'next/link';
 
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  slug: string;
+  technologies: string[];
+}
+
+export default function ProjectCard({ title, description, slug, technologies }: ProjectCardProps) {
   return (
-    <article className="flex h-full flex-col gap-4 rounded-card border border-line bg-surface p-6">
-      <div className="flex flex-col gap-2">
-        <h3 className="text-subheading">{name}</h3>
-        <p className="text-small text-muted">{tagline}</p>
-      </div>
-
-      <p className="text-small">{description}</p>
-
-      <ul className="mt-auto flex flex-wrap gap-2 pt-2">
-        {tech.map((t) => (
-          <li key={t} className="tag">
-            {t}
-          </li>
-        ))}
-      </ul>
-
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-small">
-        {detail && (
-          <Link href={`/work/${slug}`} className="link-ember font-medium">
-            Read the write-up <span aria-hidden>→</span>
-          </Link>
-        )}
-        {links.live && (
-          <a href={links.live} target="_blank" rel="noreferrer noopener" className="link-ember">
-            Visit live <span aria-hidden>↗</span>
-          </a>
-        )}
-        {links.repo && (
-          <a href={links.repo} target="_blank" rel="noreferrer noopener" className="link-ember">
-            Source <span aria-hidden>↗</span>
-          </a>
-        )}
-      </div>
-    </article>
-  )
+    <div className="mb-8 group">
+        <Link href={`/projects/${slug}`} className="block">
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:underline underline-offset-4 decoration-zinc-400">
+                {title}
+            </h3>
+            
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed max-w-2xl">
+                {description}
+            </p>
+            
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-3">
+                {technologies.map((tech) => (
+                    <span key={tech} className="text-xs font-medium text-zinc-500 dark:text-zinc-500 font-mono">
+                        {tech}
+                    </span>
+                ))}
+            </div>
+        </Link>
+    </div>
+  );
 }

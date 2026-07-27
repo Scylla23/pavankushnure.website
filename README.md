@@ -22,49 +22,49 @@ npx serve out    # preview the real static output
 
 | What | Where |
 |---|---|
-| All bio, experience, skills, education content | `src/data/profile.ts` |
-| All projects, including per-project write-ups | `src/data/projects.ts` |
-| Design tokens | `src/app/globals.css` (`:root`) and `tailwind.config.ts` |
+| Name, socials, bio, banner quote | `src/components/Header.tsx` |
+| Experience | `src/components/Experience.tsx` |
+| Education | `src/components/Education.tsx` |
+| Skills | `src/components/Stack.tsx` |
+| Contact copy and links | `src/components/Contact.tsx` |
+| Projects, including per-project write-ups | `src/data/projects.ts` |
 
-Nothing is hardcoded in components — to change copy, edit the data files.
-
-A project gets its own page at `/work/<slug>` if and only if it has a `detail`
-block. Adding one is enough; the route, the sitemap entry, and the card's
-"Read the write-up" link all follow from it.
+The home page shows `projects.slice(0, 3)`; `/projects` shows all of them, and
+every project also gets its own page at `/projects/<slug>`.
 
 ## Images
 
-Sources live in `photos/` (gitignored — they are large originals). The
-committed derivatives in `public/img/` are produced by:
+`public/avatar.jpg` is cropped from `photos/` (gitignored originals):
 
 ```bash
 ./scripts/build-images.sh          # needs ImageMagick
 ```
 
-Run it only when a source photo changes. It is deliberately not in CI: the
-output is committed and the runner has no ImageMagick.
-
-The Open Graph card is rendered from `scripts/og.html` with the real site fonts:
+`public/thumbnails/*.jpg` are live screenshots of each project, captured with:
 
 ```bash
-playwright screenshot --viewport-size=1200,630 --wait-for-timeout=1200 \
-  "file://$PWD/scripts/og.html" public/og.png
+playwright screenshot --viewport-size=1440,900 --wait-for-timeout=6000 <url> <out.png>
 ```
+
+Three projects have no usable screenshot (ProposalIQ sits behind auth, docsyntra
+has no public site, ModelDuet is a repo) and use a generated typographic card
+instead.
 
 ## Deploying
 
 Push to `main`. The workflow typechecks, builds, and publishes `out/`.
 
-Three things make the static export work on Pages, all in `next.config.mjs`
-and `public/`:
+Static export on Pages depends on all of these:
 
 - `output: 'export'` — no Node server on Pages
 - `images: { unoptimized: true }` — required by export; sizes are pre-generated
-- `trailingSlash: true` — `/work` resolves to `/work/index.html`
+- `trailingSlash: true` — `/projects` resolves to `/projects/index.html`
+- `export const dynamic = 'force-static'` in `src/app/robots.ts` and `sitemap.ts`
 - `public/.nojekyll` — without it Pages strips `_next/` and every asset 404s
 - `public/CNAME` — holds the custom domain
 
 ## Design
 
-The system is documented in `DESIGN.md`, including a decision log explaining
-why each choice is what it is. Change the doc before changing the tokens.
+Layout, type and components are a direct port of
+<https://github.com/punyajain1/Portfolio_PJ> with the content swapped. Match that
+reference before changing anything visual.
