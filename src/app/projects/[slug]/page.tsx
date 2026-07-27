@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: ProjectPageProps) {
   }
 
   return {
-    title: `${project.title} - Pavan Kushnure`,
+    // layout.tsx already appends "| Pavan Kushnure" via the title template.
+    title: project.title,
     description: project.description,
   };
 }
