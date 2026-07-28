@@ -186,6 +186,12 @@ html {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Sampled off the ridge banner (#f8bd6d, hue 35) — the one saturated colour
+       in the four-slide set, and complementary to the blue-dominant other three.
+       Darkened here to clear 3:1 on white; the dark theme uses the sample as-is.
+       Swap both if public/banner.jpg is ever replaced. */
+    --accent-ink: 30 96% 44%;
   }
 
   .dark {
@@ -213,6 +219,8 @@ html {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    --accent-ink: 35 91% 70%;
   }
 }
 

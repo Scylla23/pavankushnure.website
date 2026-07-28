@@ -70,10 +70,14 @@ const Navbar = () => {
                 : 'text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white'
             }`}
           >
+            {/* The accent lands here and on the rule only — never on the label,
+                which stays ink so the text contrast is the same as the body. */}
             <span
               aria-hidden="true"
               className={`transition-opacity duration-300 motion-reduce:transition-none ${
-                isActive ? 'opacity-100' : 'opacity-50 group-hover:opacity-100'
+                isActive
+                  ? 'text-[hsl(var(--accent-ink))] opacity-100'
+                  : 'opacity-50 group-hover:opacity-100'
               }`}
             >
               #
@@ -84,7 +88,7 @@ const Navbar = () => {
                   underlining on hover too made the two states identical. */}
               <span
                 aria-hidden="true"
-                className={`absolute -bottom-1 left-0 h-px w-full origin-left bg-current transition-transform duration-300 ease-out motion-reduce:transition-none ${
+                className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-[hsl(var(--accent-ink))] transition-transform duration-300 ease-out motion-reduce:transition-none ${
                   isActive ? 'scale-x-100' : 'scale-x-0'
                 }`}
               />
