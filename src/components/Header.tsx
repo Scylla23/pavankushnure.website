@@ -14,9 +14,9 @@ import RotatingText from '@/components/RotatingText';
 
 const ROLES = [
   'Lead AI Engineer @ Bravent LLC',
-  'on the daily grind',
-  'building in public',
+  'available for freelance AI work',
   'LLM gateways, guardrails, agents',
+  'building in public',
 ];
 
 export default function Header() {
@@ -189,7 +189,7 @@ export default function Header() {
       {/* Bio */}
       <div className="mt-2 px-1 sm:px-0">
         <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-base sm:text-lg">
-          Full-stack engineer with 3+ years building SaaS products that real teams depend on daily. React micro-frontends, Node.js and FastAPI services, MongoDB and PostgreSQL, GCP and OCI. Lately that means LLM gateways, runtime guardrails, and agentic workflow platforms — owned from architecture decision to production deploy, across time zones.
+          AI engineer. I build LLM systems that hold up in production: a gateway that puts every model provider behind one policy, guardrails that catch PII and prompt injection while the request is still in flight, agent workflows with real budget and approval limits, and evals that tell you when a prompt change broke something. Three years of full-stack product work before that (React, Node, FastAPI, Postgres, GCP), which is why these systems arrive with auth, billing and observability already wired in.
         </p>
       </div>
     </motion.header>

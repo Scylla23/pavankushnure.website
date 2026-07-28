@@ -61,7 +61,8 @@ export default function Contact() {
 
       <p className="text-zinc-600 dark:text-zinc-400 mb-8 max-w-lg leading-relaxed text-base sm:text-lg">
         I work remotely from India for US teams and usually reply within a day.
-        Reach out about roles, contract work, or anything you are building with LLMs.
+        I take on freelance and contract work: LLM features that need to get from
+        demo to production, guardrails, agents, evals. Tell me what you are stuck on.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4 sm:items-center mb-8">
@@ -71,7 +72,7 @@ export default function Contact() {
         >
           <a href={`mailto:${email}`}>
             <Mail className="w-4 h-4 mr-2" />
-            Say Hello
+            Start a Project
           </a>
         </Button>
 
