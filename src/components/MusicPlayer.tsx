@@ -63,27 +63,31 @@ const MusicPlayer = () => {
         onPause={() => setPlaying(false)}
       />
 
+      {/* Below 640px this is the icon alone. globals.css gives every a and
+          button a 48px tap target there, which the track name cannot honour
+          without turning into a three-line block, and a phone has better uses
+          for that corner anyway. */}
       <div
         ref={wrapRef}
-        className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 py-1.5 pl-2 pr-3 backdrop-blur-md dark:border-zinc-800 dark:bg-black/80"
+        className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 p-1 backdrop-blur-md dark:border-zinc-800 dark:bg-black/80 sm:py-1.5 sm:pl-2 sm:pr-3"
       >
         <button
           type="button"
           onClick={toggle}
           aria-pressed={playing}
           aria-label={playing ? `Pause ${TRACK_NAME}` : `Play ${TRACK_NAME}`}
-          className={`!min-h-0 !min-w-0 rounded-full p-1 transition-colors ${
+          className={`!min-h-0 !min-w-0 flex h-11 w-11 items-center justify-center rounded-full transition-colors sm:h-auto sm:w-auto sm:p-1 ${
             playing ? 'text-[#1db954]' : 'text-zinc-400 hover:text-black dark:text-zinc-500 dark:hover:text-white'
           }`}
         >
-          <SpotifyIcon className="h-4 w-4" />
+          <SpotifyIcon className="h-5 w-5 sm:h-4 sm:w-4" />
         </button>
 
         <a
           href={TRACK_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-zinc-500 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white"
+          className="hidden text-xs text-zinc-500 transition-colors hover:text-black dark:text-zinc-400 dark:hover:text-white sm:inline"
         >
           {TRACK_NAME}
         </a>
