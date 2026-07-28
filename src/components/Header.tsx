@@ -24,6 +24,10 @@ export default function Header() {
 
   // Monochrome at rest, brand colour on hover. LinkedIn keeps its lighter
   // dark-mode blue (#70b5f9) because #0a66c2 disappears against black.
+  //
+  // Every entry needs a `dark:hover:` twin even when the colour is identical:
+  // Tailwind emits `dark:` after `hover:`, and at equal specificity the later
+  // rule wins, so a bare `hover:text-*` is dead in dark mode.
   const socialLinks = [
     {
       name: "GitHub",
@@ -46,12 +50,10 @@ export default function Header() {
     {
       name: "Instagram",
       url: "https://instagram.com/pavankushnure",
-      // Stroke goes to the brand gradient on hover; the text colour still
-      // drives the glow, which currentColor cannot read off a paint server.
       icon: (
         <InstagramIcon className="w-full h-full group-hover:[stroke:url(#ig-gradient)]" />
       ),
-      hover: "hover:text-[#dc2743]",
+      hover: "hover:text-[#dc2743] dark:hover:text-[#dc2743]",
     }
   ];
 
@@ -63,7 +65,7 @@ export default function Header() {
           variant="ghost"
           size="icon"
           asChild
-          className={`group rounded-full text-zinc-600 dark:text-zinc-400 hover:drop-shadow-[0_0_6px_currentColor] ${link.hover}`}
+          className={`group rounded-full text-zinc-600 dark:text-zinc-400 ${link.hover}`}
         >
           <Link
             href={link.url}
@@ -80,7 +82,7 @@ export default function Header() {
         variant="ghost"
         size="icon"
         asChild
-        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#ef4444] hover:drop-shadow-[0_0_6px_currentColor]"
+        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#fb923c] dark:hover:text-[#fb923c]"
       >
         {/* Plain <a>: next/link would prefetch the PDF as an RSC route and 404. */}
         <a
@@ -98,7 +100,7 @@ export default function Header() {
         onClick={toggleDarkMode}
         variant="ghost"
         size="icon"
-        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#fbbf24] hover:drop-shadow-[0_0_6px_currentColor]"
+        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#fbbf24] dark:hover:text-[#fbbf24]"
         aria-label={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
       >
         <div className="w-4 h-4 flex items-center justify-center">

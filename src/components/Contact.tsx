@@ -48,7 +48,7 @@ export default function Contact() {
       icon: (
         <InstagramIcon className="w-5 h-5 group-hover:[stroke:url(#ig-gradient)]" />
       ),
-      hover: 'hover:text-[#dc2743]',
+      hover: 'hover:text-[#dc2743] dark:hover:text-[#dc2743]',
     },
   ];
 
@@ -96,7 +96,7 @@ export default function Contact() {
         <Button
           asChild
           variant="ghost"
-          className="rounded-full px-6 text-zinc-600 dark:text-zinc-400 hover:text-[#ef4444]"
+          className="rounded-full px-6 text-zinc-600 dark:text-zinc-400 hover:text-[#fb923c] dark:hover:text-[#fb923c]"
         >
           <a
             href="/pavan-kushnure-resume.pdf"
@@ -115,7 +115,7 @@ export default function Contact() {
             key={link.name}
             href={link.url}
             target="_blank"
-            className={`group p-2 rounded-full transition-colors text-zinc-600 dark:text-zinc-400 hover:drop-shadow-[0_0_6px_currentColor] ${link.hover}`}
+            className={`group p-2 rounded-full transition-colors text-zinc-600 dark:text-zinc-400 ${link.hover}`}
             aria-label={link.name}
           >
             {link.icon}
