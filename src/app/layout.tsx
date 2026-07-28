@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
-import { SpotifyPlayer } from '@/components'
+import { MusicPlayer } from '@/components'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
@@ -145,7 +145,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen transition-colors duration-200">
         <ThemeProvider>
           {children}
-          <SpotifyPlayer />
+          <MusicPlayer />
         </ThemeProvider>
         <Script
           id="person-schema"

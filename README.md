@@ -25,7 +25,7 @@ npx serve out    # preview the real static output
 | Name, socials, bio | `src/components/Header.tsx` |
 | Banner slides, the code line on each, hold time | `src/data/banner.ts` |
 | Banner quote and its motion | `src/components/Banner.tsx` |
-| The Spotify track in the corner player | `src/components/SpotifyPlayer.tsx` |
+| The track in the corner player | `src/components/MusicPlayer.tsx` |
 | Experience | `src/components/Experience.tsx` |
 | Education | `src/components/Education.tsx` |
 | Skills | `src/components/Stack.tsx` |
