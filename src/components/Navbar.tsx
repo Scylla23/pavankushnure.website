@@ -3,16 +3,17 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-/** Display order, which is not document order — see SPY_ORDER. */
+/** Display order, which now matches the order the sections appear down the page. */
 const LINKS = [
   { id: 'home', href: '/', label: 'home' },
-  { id: 'projects', href: '/#projects', label: 'projects' },
   { id: 'stack', href: '/#stack', label: 'skills' },
+  { id: 'projects', href: '/#projects', label: 'projects' },
   { id: 'contact', href: '/#contact', label: 'contact' },
 ];
 
-/** The same sections in DOCUMENT order, so the sightline scan and the
- *  bottom-of-page rule both read top to bottom. */
+/** The scanned sections in DOCUMENT order, so the sightline scan and the
+ *  bottom-of-page rule both read top to bottom. Keep this in page order even
+ *  if LINKS is ever reshuffled again. */
 const SPY_ORDER = ['stack', 'projects', 'contact'];
 
 /** Where down the viewport a section has to reach to count as the one you are on. */
