@@ -4,8 +4,9 @@
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import Image from 'next/image';
-import { Sun, Moon, Github, Linkedin, Instagram, FileText } from 'lucide-react';
+import { Sun, Moon, Github, Linkedin, FileText } from 'lucide-react';
 import { XIcon } from '@/components/ui/XIcon';
+import { InstagramIcon } from '@/components/ui/InstagramIcon';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import Banner from '@/components/Banner';
@@ -21,26 +22,36 @@ const ROLES = [
 export default function Header() {
   const { isDarkMode, toggleDarkMode } = useTheme();
 
+  // Monochrome at rest, brand colour on hover. LinkedIn keeps its lighter
+  // dark-mode blue (#70b5f9) because #0a66c2 disappears against black.
   const socialLinks = [
     {
       name: "GitHub",
       url: "https://github.com/Scylla23",
-      icon: <Github className="w-full h-full text-zinc-900 dark:text-zinc-100" />,
+      icon: <Github className="w-full h-full" />,
+      hover: "hover:text-[#181717] dark:hover:text-white",
     },
     {
       name: "X (Twitter)",
       url: "https://x.com/pavankushnure",
-      icon: <XIcon className="w-full h-full text-zinc-900 dark:text-zinc-100" />,
+      icon: <XIcon className="w-full h-full" />,
+      hover: "hover:text-black dark:hover:text-white",
     },
     {
       name: "LinkedIn",
       url: "https://linkedin.com/in/pavankushnure",
-      icon: <Linkedin className="w-full h-full text-[#0a66c2]" />,
+      icon: <Linkedin className="w-full h-full" />,
+      hover: "hover:text-[#0a66c2] dark:hover:text-[#70b5f9]",
     },
     {
       name: "Instagram",
       url: "https://instagram.com/pavankushnure",
-      icon: <Instagram className="w-full h-full text-zinc-900 dark:text-zinc-100" />,
+      // Stroke goes to the brand gradient on hover; the text colour still
+      // drives the glow, which currentColor cannot read off a paint server.
+      icon: (
+        <InstagramIcon className="w-full h-full group-hover:[stroke:url(#ig-gradient)]" />
+      ),
+      hover: "hover:text-[#dc2743]",
     }
   ];
 
@@ -52,7 +63,7 @@ export default function Header() {
           variant="ghost"
           size="icon"
           asChild
-          className="rounded-full"
+          className={`group rounded-full text-zinc-600 dark:text-zinc-400 hover:drop-shadow-[0_0_6px_currentColor] ${link.hover}`}
         >
           <Link
             href={link.url}
@@ -69,7 +80,7 @@ export default function Header() {
         variant="ghost"
         size="icon"
         asChild
-        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#ef4444] hover:drop-shadow-[0_0_6px_currentColor]"
       >
         {/* Plain <a>: next/link would prefetch the PDF as an RSC route and 404. */}
         <a
@@ -87,7 +98,7 @@ export default function Header() {
         onClick={toggleDarkMode}
         variant="ghost"
         size="icon"
-        className="rounded-full"
+        className="rounded-full text-zinc-600 dark:text-zinc-400 hover:text-[#fbbf24] hover:drop-shadow-[0_0_6px_currentColor]"
         aria-label={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
       >
         <div className="w-4 h-4 flex items-center justify-center">

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Github, Linkedin, Instagram, Check, Copy, FileText } from 'lucide-react';
+import { Mail, Github, Linkedin, Check, Copy, FileText } from 'lucide-react';
 import { XIcon } from '@/components/ui/XIcon';
+import { InstagramIcon } from '@/components/ui/InstagramIcon';
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
@@ -21,31 +22,39 @@ export default function Contact() {
     }
   };
 
+  // Same rest/hover treatment as the header row — see Header.tsx.
   const socialLinks = [
     {
       name: 'LinkedIn',
       url: 'https://linkedin.com/in/pavankushnure',
       icon: <Linkedin className="w-5 h-5" />,
+      hover: 'hover:text-[#0a66c2] dark:hover:text-[#70b5f9]',
     },
     {
       name: 'GitHub',
       url: 'https://github.com/Scylla23',
       icon: <Github className="w-5 h-5" />,
+      hover: 'hover:text-[#181717] dark:hover:text-white',
     },
     {
       name: 'X (Twitter)',
       url: 'https://x.com/pavankushnure',
       icon: <XIcon className="w-5 h-5" />,
+      hover: 'hover:text-black dark:hover:text-white',
     },
     {
       name: 'Instagram',
       url: 'https://instagram.com/pavankushnure',
-      icon: <Instagram className="w-5 h-5" />,
+      icon: (
+        <InstagramIcon className="w-5 h-5 group-hover:[stroke:url(#ig-gradient)]" />
+      ),
+      hover: 'hover:text-[#dc2743]',
     },
   ];
 
+  // The #contact id lives on the wrapper in page.tsx, which owns scroll-mt.
   return (
-    <section className="mb-12 mt-8" id="contact">
+    <section className="mb-12 mt-8">
       <h2 id="contact-heading" className="text-3xl font-serif italic text-black dark:text-white mb-6">
         Get in Touch
       </h2>
@@ -87,7 +96,7 @@ export default function Contact() {
         <Button
           asChild
           variant="ghost"
-          className="rounded-full px-6 text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+          className="rounded-full px-6 text-zinc-600 dark:text-zinc-400 hover:text-[#ef4444]"
         >
           <a
             href="/pavan-kushnure-resume.pdf"
@@ -106,7 +115,7 @@ export default function Contact() {
             key={link.name}
             href={link.url}
             target="_blank"
-            className="p-2 rounded-full  transition-colors text-zinc-600 dark:text-zinc-400 dark:hover:text-white"
+            className={`group p-2 rounded-full transition-colors text-zinc-600 dark:text-zinc-400 hover:drop-shadow-[0_0_6px_currentColor] ${link.hover}`}
             aria-label={link.name}
           >
             {link.icon}
