@@ -22,7 +22,10 @@ npx serve out    # preview the real static output
 
 | What | Where |
 |---|---|
-| Name, socials, bio, banner quote | `src/components/Header.tsx` |
+| Name, socials, bio | `src/components/Header.tsx` |
+| Banner slides, the code line on each, hold time | `src/data/banner.ts` |
+| Banner quote and its motion | `src/components/Banner.tsx` |
+| The Spotify track in the corner player | `src/components/SpotifyPlayer.tsx` |
 | Experience | `src/components/Experience.tsx` |
 | Education | `src/components/Education.tsx` |
 | Skills | `src/components/Stack.tsx` |
@@ -34,11 +37,16 @@ every project also gets its own page at `/projects/<slug>`.
 
 ## Images
 
-`public/avatar.jpg` is cropped from `photos/` (gitignored originals):
+The two avatars are cropped from `photos/` (gitignored originals) and the
+banner slides after the first are pulled from Unsplash:
 
 ```bash
-./scripts/build-images.sh          # needs ImageMagick
+./scripts/build-images.sh          # needs ImageMagick and network
 ```
+
+`avatar.jpg` shows on the dark theme, `avatar-light.jpg` on the light one.
+Slide 1 is `public/banner.jpg`, which is also the OG image, so the script leaves
+it alone.
 
 `public/thumbnails/*.jpg` are live screenshots of each project, captured with:
 

@@ -6,9 +6,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Sun, Moon, Github, Linkedin, Instagram, FileText } from 'lucide-react';
 import { XIcon } from '@/components/ui/XIcon';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
-import { useAmbience } from '@/context/AmbienceContext';
+import Banner from '@/components/Banner';
 import RotatingText from '@/components/RotatingText';
 
 const ROLES = [
@@ -20,7 +20,6 @@ const ROLES = [
 
 export default function Header() {
   const { isDarkMode, toggleDarkMode } = useTheme();
-  const { scene } = useAmbience();
 
   const socialLinks = [
     {
@@ -105,45 +104,33 @@ export default function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Banner */}
-      <div className="relative w-full h-[200px] sm:h-[270px] rounded-2xl overflow-hidden mb-[-40px] sm:mb-[-50px] z-0">
-        {/* Crossfades with the soundscape picked in the player. */}
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={scene.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={scene.photo}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 768px"
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-          <p className="text-white text-base sm:text-xl italic font-serif text-center drop-shadow-md px-4">
-            {scene.caption}
-          </p>
-        </div>
-      </div>
+      <Banner />
 
       {/* Profile and Info */}
       <div className="relative z-10 px-4 sm:px-6">
         <div className="flex justify-between items-end">
           {/* Profile Picture */}
-          <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white dark:border-background bg-zinc-100 dark:bg-zinc-800 overflow-hidden transform translate-y-2">
+          {/* One portrait per theme: outdoors on the light background, studio on
+              the dark. Both stay mounted and swap on opacity, so the toggle
+              crossfades instead of popping a half-loaded image in. */}
+          <div
+            role="img"
+            aria-label="Pavan Kushnure — Lead AI Engineer based in Maharashtra, India"
+            className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white dark:border-background bg-zinc-100 dark:bg-zinc-800 overflow-hidden transform translate-y-2"
+          >
+            <Image
+              src="/avatar-light.jpg"
+              alt=""
+              fill
+              className="object-cover transition-opacity duration-300 dark:opacity-0"
+              sizes="(max-width: 640px) 96px, 128px"
+              priority
+            />
             <Image
               src="/avatar.jpg"
-              alt="Pavan Kushnure — Lead AI Engineer based in Maharashtra, India"
+              alt=""
               fill
-              className="object-cover"
+              className="object-cover opacity-0 transition-opacity duration-300 dark:opacity-100"
               sizes="(max-width: 640px) 96px, 128px"
               priority
             />
