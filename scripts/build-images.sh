@@ -21,7 +21,9 @@ magick "photos/profile pic.jpeg" -crop 1700x1700+1243+0 +repage \
   -resize 512x512 -quality 85 public/avatar.jpg
 echo "wrote: public/avatar.jpg"
 
-magick "photos/IMG_3223 2.jpg" -auto-orient -crop 1800x1800+150+750 +repage \
+# Portrait source is 3214x5712; this crop is 1:1 on the face, head top ~14% down
+# so the circle mask never clips the cap.
+magick "photos/IMG_4094 2.jpg" -auto-orient -crop 800x800+1265+1379 +repage \
   -resize 512x512 -quality 85 public/avatar-light.jpg
 echo "wrote: public/avatar-light.jpg"
 
