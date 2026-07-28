@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-/** Display order. Three of the four are real page anchors, so the leading `#`
- *  is literal, not decoration — it mirrors the trailing `#` on section headings. */
+/** Display order, which is not document order — see SPY_ORDER. */
 const LINKS = [
   { id: 'home', href: '/', label: 'home' },
   { id: 'projects', href: '/#projects', label: 'projects' },
@@ -12,42 +11,79 @@ const LINKS = [
   { id: 'contact', href: '/#contact', label: 'contact' },
 ];
 
-/** The same sections in DOCUMENT order, which is not the display order above.
- *  Ties (two sections in the band at once) resolve to the higher one. */
+/** The same sections in DOCUMENT order, so the sightline scan and the
+ *  bottom-of-page rule both read top to bottom. */
 const SPY_ORDER = ['stack', 'projects', 'contact'];
+
+/** Where down the viewport a section has to reach to count as the one you are on. */
+const SIGHTLINE = 0.45;
 
 const Navbar = () => {
   // Only the home page renders this bar; /projects and /projects/[slug] carry
   // their own back link. So the active item comes from scroll position alone.
   const [active, setActive] = useState('home');
 
-  // Highlight whatever section is crossing the middle of the viewport. The old
-  // pathname check could never match a `/#hash`, so `home` was permanently lit.
+  // A click is a statement of intent, so it wins outright over the geometry
+  // below until its smooth scroll comes to rest. Without this, clicking a
+  // section that cannot reach the sightline — on a window tall enough to show
+  // the whole tail of the page at once — immediately re-derives to a different
+  // one, and the rule appears to jump to a link you did not press.
+  const clickedRef = useRef(false);
+  const settleRef = useRef<ReturnType<typeof setTimeout>>();
+
   useEffect(() => {
     const els = SPY_ORDER.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => el !== null
     );
     if (!els.length) return;
 
-    const inBand = new Set<string>();
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) inBand.add(e.target.id);
-          else inBand.delete(e.target.id);
-        }
-        const hit = SPY_ORDER.find((id) => inBand.has(id));
-        // Nothing in the band means either the hero up top or a gap between
-        // sections. Near the top that is home; anywhere else hold the last one.
-        // ponytail: scrollY threshold, swap for a hero sentinel if it ever drifts.
-        setActive((prev) => hit ?? (window.scrollY < 240 ? 'home' : prev));
-      },
-      // Shrink the root to a band across the viewport's middle third.
-      { rootMargin: '-40% 0px -50% 0px' }
-    );
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const doc = document.documentElement;
 
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+      // The last section can never reach the sightline: at max scroll there is
+      // not a viewport of content below it, so on a tall window it comes to rest
+      // underneath the line and the spy used to hold whatever came before it.
+      // Hitting the bottom of the page always means the last section.
+      if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+        setActive(SPY_ORDER[SPY_ORDER.length - 1]);
+        return;
+      }
+
+      const line = window.innerHeight * SIGHTLINE;
+      const hit = els.find((el) => {
+        const { top, bottom } = el.getBoundingClientRect();
+        return top <= line && bottom > line;
+      });
+
+      // Nothing crosses the line: the hero up top, or a gap between two
+      // sections. Near the top that is home; anywhere else hold what we passed.
+      setActive((prev) => hit?.id ?? (window.scrollY < 240 ? 'home' : prev));
+    };
+
+    const onScroll = () => {
+      // Hold off while a clicked jump is still travelling; release once the
+      // scroll has been quiet briefly, which covers any distance or duration.
+      if (clickedRef.current) {
+        clearTimeout(settleRef.current);
+        settleRef.current = setTimeout(() => {
+          clickedRef.current = false;
+        }, 150);
+        return;
+      }
+      if (!frame) frame = requestAnimationFrame(read);
+    };
+
+    read();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      window.clearTimeout(settleRef.current);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
@@ -62,37 +98,27 @@ const Navbar = () => {
             key={id}
             href={href}
             aria-current={isActive ? 'page' : undefined}
+            onClick={() => {
+              clickedRef.current = true;
+              setActive(id);
+            }}
             // globals.css forces a 48px tap target onto every <a> under 640px,
             // which would triple the height of this bar.
-            className={`!min-h-0 !min-w-0 group inline-flex items-baseline rounded-sm py-1 transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 ${
+            className={`!min-h-0 !min-w-0 group relative inline-block rounded-sm py-1 transition-colors duration-300 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600 ${
               isActive
                 ? 'text-black dark:text-white'
                 : 'text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white'
             }`}
           >
-            {/* The accent lands here and on the rule only — never on the label,
-                which stays ink so the text contrast is the same as the body. */}
+            {label}
+            {/* The accent rides here alone now. The label stays ink, so its text
+                contrast is the same as the body copy. */}
             <span
               aria-hidden="true"
-              className={`transition-opacity duration-300 motion-reduce:transition-none ${
-                isActive
-                  ? 'text-[hsl(var(--accent-ink))] opacity-100'
-                  : 'opacity-50 group-hover:opacity-100'
+              className={`absolute -bottom-0.5 left-0 h-[2px] w-full origin-left bg-[hsl(var(--accent-ink))] transition-transform duration-300 ease-out motion-reduce:transition-none ${
+                isActive ? 'scale-x-100' : 'scale-x-0'
               }`}
-            >
-              #
-            </span>
-            <span className="relative inline-block transition-transform duration-300 ease-out motion-reduce:transition-none group-hover:translate-x-px">
-              {label}
-              {/* Active only. Hover already lifts the colour and the `#`, so
-                  underlining on hover too made the two states identical. */}
-              <span
-                aria-hidden="true"
-                className={`absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-[hsl(var(--accent-ink))] transition-transform duration-300 ease-out motion-reduce:transition-none ${
-                  isActive ? 'scale-x-100' : 'scale-x-0'
-                }`}
-              />
-            </span>
+            />
           </Link>
         );
       })}
