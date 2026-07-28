@@ -13,8 +13,9 @@ const skills = [
 ];
 
 export default function Stack() {
+  // The #stack id lives on the wrapper in page.tsx, which owns scroll-mt.
   return (
-    <section className="mb-16" id="stack">
+    <section className="mb-16">
       <h2 id="stack-heading" className="text-lg font-bold mb-6 text-black dark:text-white flex items-center gap-2">
         Skills <span className="text-zinc-400 font-normal">#</span>
       </h2>
