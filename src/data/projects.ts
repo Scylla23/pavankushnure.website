@@ -15,6 +15,31 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "GovEngine",
+    slug: "govengine",
+    description: "A governed agent platform that turns plain-English work into approved, deterministic graphs, with authored task and monitoring agents plus a governed MCPOne mode.",
+    longDescription: [
+      "GovEngine keeps model judgment out of runtime control flow. You describe the work in plain English, inspect the typed graph it produces and approve it before a manual, scheduled or event-driven run.",
+      "The model is used only while the graph is being designed. It can restate the request and ask for missing details before drafting. Approval freezes an immutable version; a deterministic executor then walks that exact graph.",
+      "The catalog covers 300 task and monitoring templates across 30 categories. Fourteen currently have fully authored workflows, including Federal Register and cyber-threat monitoring, regulatory tracking, document review and policy-waiver expiration.",
+      "I recently built its cloud VM monitoring subsystem: a customer-hosted, outbound-only collector for AWS, Azure and GCP. It records inventory, utilization and per-owner cost, then reports idle and rightsizing recommendations with estimated savings. GovEngine never receives a cloud credential, and it does not apply those recommendations automatically.",
+      "In governed mode, every LLM call passes through MCPOne's guardrails. In that mode, catalog runs also use MCPOne for authorization, tool mediation and output screening, with evidence references stored on each run. Connector effects go through one deny-by-default, scope-checking funnel; a human can be required to approve side effects before they leave the system."
+    ],
+    features: [
+      "Plain-English request to an inspectable agent graph",
+      "Immutable approval and deterministic execution",
+      "Fourteen fully authored agents in a 300-template catalog",
+      "Manual, scheduled and event-triggered runs",
+      "AWS, Azure and GCP VM cost and utilization monitoring",
+      "MCPOne controls with human approval for side effects"
+    ],
+    technologies: ["TypeScript", "Next.js", "PostgreSQL", "Redis", "BullMQ", "MCP", "Docker"],
+    thumbnail: "/thumbnails/govengine.jpg",
+    links: {
+      visit: "https://govengine.ai"
+    }
+  },
+  {
     title: "MCPOne",
     slug: "mcpone",
     description: "A policy-enforced runtime that screens every AI request before it reaches a model, over REST, gRPC and MCP, with an append-only audit trail.",
@@ -114,20 +139,6 @@ export const projects: Project[] = [
       // http, not https: the domain serves a *.github.io cert, so https fails to load.
       visit: "http://featuregate.online/",
       source: "https://github.com/Scylla23/featuregate"
-    }
-  },
-  {
-    title: "GovEngine",
-    slug: "govengine",
-    description: "A federal agentic-AI platform that turns a plain-English request into a deterministic agent, running once or on a schedule, behind a draft-and-approve flow.",
-    longDescription: [
-      "A federal agentic-AI platform that turns a plain-English request into a deterministic agent, running once or on a schedule, behind a draft-and-approve flow."
-    ],
-    features: [],
-    technologies: ["TypeScript", "Agent orchestration", "OCI", "Nginx", "GitHub Actions"],
-    thumbnail: "/thumbnails/govengine.jpg",
-    links: {
-      visit: "https://govengine.ai"
     }
   },
   {
