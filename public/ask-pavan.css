@@ -320,11 +320,12 @@
 
 @media (max-width: 640px) {
   .apv-panel {
-    right: 10px;
+    right: 16px;
     bottom: 144px;
-    width: calc(100vw - 20px);
-    height: calc(100vh - 160px);
-    height: calc(100dvh - 160px);
+    width: calc(100vw - 32px);
+    /* A card, not a takeover: most of the page stays scrollable behind it. */
+    height: min(420px, 60vh);
+    height: min(420px, 60dvh);
   }
 }
 
