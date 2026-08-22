@@ -312,7 +312,6 @@
 
 .apv-bubble:focus-visible,
 .apv-close:focus-visible,
-.apv-input:focus-visible,
 .apv-send:focus-visible,
 .apv-retry:focus-visible {
   outline: 2px solid hsl(var(--accent-ink));
