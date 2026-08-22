@@ -31,6 +31,7 @@ npx serve out    # preview the real static output
 | Skills | `src/components/Stack.tsx` |
 | Contact copy and links | `src/components/Contact.tsx` |
 | Projects, including per-project write-ups | `src/data/projects.ts` |
+| Ask-my-AI chatbot widget | `public/ask-pavan.js`, `public/ask-pavan.css`, backend in `worker/` |
 
 The home page shows `projects.slice(0, 3)`; `/projects` shows all of them, and
 every project also gets its own page at `/projects/<slug>`.

@@ -1,0 +1,19 @@
+name = "ask-pavan"
+main = "src/index.ts"
+compatibility_date = "2025-05-05"
+
+# knowledge.md is imported as text at build time (esbuild text loader).
+rules = [
+  { type = "Text", globs = ["**/*.md"], fallthrough = true },
+]
+
+[vars]
+# gemini-2.5-flash is closed to new API keys; 3.6-flash is the current default.
+MODEL = "gemini-3.6-flash"
+RATE_LIMIT_PER_HOUR = "15"
+ALLOWED_ORIGINS = "https://pavankushnure.website,https://www.pavankushnure.website,http://localhost:*"
+
+[[d1_databases]]
+binding = "LOG"
+database_name = "ask-pavan-log"
+database_id = "cee948da-3030-4f55-a368-89c535ba92d3"

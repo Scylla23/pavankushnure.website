@@ -152,6 +152,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
+        <Script src="/ask-pavan.js" strategy="afterInteractive" />
       </body>
     </html>
   )

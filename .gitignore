@@ -9,3 +9,8 @@ next-env.d.ts
 
 # Source photos are large originals; only the processed public/img/ output ships.
 photos/
+
+# Ask-my-AI worker
+worker/.dev.vars
+worker/node_modules/
+worker/.wrangler/
