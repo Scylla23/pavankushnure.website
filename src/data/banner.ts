@@ -3,6 +3,9 @@ export type Slide = {
   photo: string
   /** Printed over the photo in the header, one line, monospace. */
   code: string
+  /** Optional Veo clip that plays instead of the still; `photo` is its poster
+      and stays as the reduced-motion fallback. */
+  video?: string
 }
 
 // Ground to orbit: his own peacock at dusk, a ridge in cloud, the milky way,
@@ -12,7 +15,7 @@ export const SLIDES: Slide[] = [
   { photo: '/banner.jpg', code: 'const reply = await gateway.route(prompt)' },
   { photo: '/img/banner-ridge.jpg', code: 'guardrails.check(reply) ?? fallback()' },
   { photo: '/img/banner-stars.jpg', code: 'for await (const token of agent.stream())' },
-  { photo: '/img/banner-orbit.jpg', code: 'deploy --region asia-south1 --wait' },
+  { photo: '/img/banner-orbit.jpg', code: 'deploy --region asia-south1 --wait', video: '/img/banner-orbit.mp4' },
 ]
 
 /** How long each slide holds, in ms. */

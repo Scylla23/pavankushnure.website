@@ -21,6 +21,9 @@ export default function Banner() {
   }, [still]);
 
   const slide = SLIDES[i];
+  // The orbit slide is a Veo clip: it already moves, so no Ken Burns zoom on
+  // top of it, and reduced-motion users get the still photo instead.
+  const isVideo = Boolean(slide.video) && !still;
 
   return (
     <div className="relative w-full h-[200px] sm:h-[270px] rounded-2xl overflow-hidden mb-[-40px] sm:mb-[-50px] z-0 bg-zinc-900">
@@ -30,23 +33,39 @@ export default function Banner() {
         <motion.div
           key={slide.photo}
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: still ? 1 : 1.08 }}
+          initial={{ opacity: 0, scale: isVideo ? 1 : still ? 1 : 1.08 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{
             opacity: { duration: FADE },
             // Runs past the hold so the zoom never visibly stops on screen.
-            scale: { duration: SLIDE_MS / 1000 + FADE, ease: 'linear' },
+            // Skipped for the video, which carries its own motion.
+            scale: isVideo
+              ? { duration: 0 }
+              : { duration: SLIDE_MS / 1000 + FADE, ease: 'linear' },
           }}
         >
-          <Image
-            src={slide.photo}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 768px"
-            priority={i === 0}
-          />
+          {isVideo ? (
+            <video
+              src={slide.video}
+              poster={slide.photo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <Image
+              src={slide.photo}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority={i === 0}
+            />
+          )}
         </motion.div>
       </AnimatePresence>
 
