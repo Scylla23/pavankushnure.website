@@ -122,18 +122,18 @@ export const projects: Project[] = [
     longDescription: [
       "A feature flag check sits in the hot path of every request, so it cannot be a network call. FeatureGate evaluates locally and pushes changes out over SSE.",
       "Segment-based targeting on top of a rule evaluation engine that uses consistent hashing for percentage rollouts, so a user who is in the 10% stays in the 10% as the rollout grows. Flag changes propagate to connected clients over SSE in under 500ms.",
-      "The Node.js SDK on npm caches flags in memory and evaluates locally, putting a check under a millisecond and removing the per-request network call entirely. The developer experience is deliberately LaunchDarkly-compatible so migrating costs nothing.",
-      "Multi-stage Docker builds deployed to GCP Cloud Run through a four-stage GitHub Actions pipeline — lint, test, build, deploy — against Terraform-provisioned infrastructure including Memorystore for Redis and Cloud Run auto-scaling."
+      "The Node.js SDK (packages/sdk-node in the monorepo) caches flags in memory and evaluates locally, putting a check under a millisecond and removing the per-request network call entirely. The developer experience is deliberately LaunchDarkly-compatible so migrating costs nothing.",
+      "Runs on an Oracle Cloud VM behind Nginx under PM2. GitHub Actions runs lint, typecheck, build, and tests on every push; a separate deploy workflow rsyncs the release to the VM over SSH and reloads the process."
     ],
     features: [
       "Consistent hashing so percentage rollouts stay stable",
       "Flag changes propagate over SSE in under 500ms",
       "Node SDK evaluates in memory, under a millisecond",
       "LaunchDarkly-compatible developer experience",
-      "Terraform-provisioned GCP infrastructure",
-      "Four-stage GitHub Actions pipeline"
+      "Oracle Cloud VM behind Nginx, managed by PM2",
+      "GitHub Actions CI plus rsync-over-SSH deploys"
     ],
-    technologies: ["Node.js", "Express", "React", "MongoDB", "Redis", "Docker", "Terraform", "GCP"],
+    technologies: ["Node.js", "Express", "React", "MongoDB", "Redis", "Docker", "Nginx", "OCI"],
     thumbnail: "/thumbnails/featuregate.jpg",
     links: {
       // http, not https: the domain serves a *.github.io cert, so https fails to load.
