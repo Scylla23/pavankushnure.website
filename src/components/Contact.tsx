@@ -110,6 +110,11 @@ export default function Contact() {
         </Button>
       </div>
 
+      <p className="mb-8 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+        I also make 20-second launch films for products.{' '}
+        <Link href="/films" className="!min-h-0 !min-w-0 rounded-sm underline underline-offset-4 hover:text-black dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400">See launch films</Link>
+      </p>
+
       <div className="flex gap-4">
         {socialLinks.map((link) => (
           <Link

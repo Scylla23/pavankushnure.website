@@ -31,10 +31,21 @@ npx serve out    # preview the real static output
 | Skills | `src/components/Stack.tsx` |
 | Contact copy and links | `src/components/Contact.tsx` |
 | Projects, including per-project write-ups | `src/data/projects.ts` |
+| Launch films and the offer's `slotsLeft` | `src/data/films.ts` |
+| Launch film inquiry form | `src/components/InquiryForm.tsx` |
+| Inquiry route and delivery | `POST /inquiry`, `worker/src/inquiry.ts` |
 | Ask-my-AI chatbot widget | `public/ask-pavan.js`, `public/ask-pavan.css`, backend in `worker/` |
 
 The home page shows `projects.slice(0, 3)`; `/projects` shows all of them, and
 every project also gets its own page at `/projects/<slug>`.
+
+The inquiry form's browser regression uses Orca's embedded browser and a local static preview.
+It checks stalled headers, a stalled response body, preserved input, editing during submission, and delayed success without sending real email.
+With `npx serve out` running and the local `/films/` page open in Orca:
+
+```bash
+node scripts/smoke-inquiry-form.mjs <Orca-page-id>
+```
 
 ## Images
 

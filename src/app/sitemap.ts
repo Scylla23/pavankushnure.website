@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: 'https://pavankushnure.website/films',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
     ...projects.map((project) => ({
       url: `https://pavankushnure.website/projects/${project.slug}`,
       lastModified: new Date(),
