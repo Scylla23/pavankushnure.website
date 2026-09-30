@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "smoke": "bash scripts/smoke.sh"
+    "smoke": "bash scripts/smoke.sh",
+    "smoke:inquiry": "bash scripts/smoke-inquiry.sh && node scripts/check-inquiry.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5",

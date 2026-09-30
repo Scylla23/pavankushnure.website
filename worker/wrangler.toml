@@ -11,6 +11,8 @@ rules = [
 # gemini-2.5-flash is closed to new API keys; 3.6-flash is the current default.
 MODEL = "gemini-3.6-flash"
 RATE_LIMIT_PER_HOUR = "15"
+INQUIRY_TO = "pavankushnure2000@gmail.com"
+INQUIRY_LIMIT_PER_HOUR = "5"
 ALLOWED_ORIGINS = "https://pavankushnure.website,https://www.pavankushnure.website,http://localhost:*"
 
 [[d1_databases]]

@@ -71,6 +71,14 @@ FeatureGate (open-source feature flags), braible.ai, govhub.ai.
 Remote-first; has worked with US teams in Virginia and New York across time zones from IST.
 Available for freelance work.
 
+## Launch films
+
+He makes 20-second launch films for software products, rendered entirely in code.
+A voiceover drives the picture, transitions land on the beat, and each film has a mascot made for the product.
+His portfolio piece is a spec film for Hotelist, Pieter Levels' hotel search, and is not affiliated with Hotelist.
+The October 2026 offer is 3 films at $99 each: 20 to 30 seconds, 1080p at 60 fps, delivered about a day after the script is approved.
+Details and the inquiry form are at pavankushnure.website/films.
+
 ## Contact
 
 Email pavankushnure2000@gmail.com · GitHub github.com/Scylla23 ·

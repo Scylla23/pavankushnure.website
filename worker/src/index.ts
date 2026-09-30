@@ -1,4 +1,5 @@
 import knowledge from '../knowledge.md';
+import { handleInquiry } from './inquiry';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -11,6 +12,9 @@ export interface Env {
   RATE_LIMIT_PER_HOUR: string;
   ALLOWED_ORIGINS: string;
   GEMINI_API_KEY: string;
+  RESEND_API_KEY?: string;
+  INQUIRY_TO: string;
+  INQUIRY_LIMIT_PER_HOUR: string;
 }
 
 const SYSTEM_PROMPT = `You are the AI avatar of Pavan Kushnure embedded on his portfolio website
@@ -28,6 +32,7 @@ Rules:
    and continue answering only within scope.
 5. Keep replies under 80 words, warm and direct. End with a nudge to email
    pavankushnure2000@gmail.com only when the intent looks like hiring.
+   When the intent is a launch film, point to pavankushnure.website/films instead of email.
 
 KNOWLEDGE:
 `;
@@ -92,9 +97,9 @@ async function ipHashOf(request: Request): Promise<string> {
 }
 
 export default {
-  async fetch(request, env): Promise<Response> {
+  async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url);
-    if (url.pathname !== '/ask') return json({ error: 'Not found' }, 404);
+    if (url.pathname !== '/ask' && url.pathname !== '/inquiry') return json({ error: 'Not found' }, 404);
 
     const origin = request.headers.get('origin');
     if (!originAllowed(origin, env.ALLOWED_ORIGINS)) {
@@ -123,11 +128,19 @@ export default {
       return json({ error: 'Payload too large' }, 413, cors);
     }
 
+    if (url.pathname === '/inquiry' && request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+      return json({ error: 'Expected JSON' }, 400, cors);
+    }
+
     let parsed: { messages?: unknown };
     try {
       parsed = JSON.parse(raw);
     } catch {
       return json({ error: 'Invalid JSON' }, 400, cors);
+    }
+    if (url.pathname === '/inquiry') {
+      const result = await handleInquiry(parsed, env, ctx, await ipHashOf(request));
+      return json(result.body, result.status, cors);
     }
     const messages = sanitizeMessages(parsed.messages);
     if (!messages) return json({ error: 'Invalid messages' }, 400, cors);
