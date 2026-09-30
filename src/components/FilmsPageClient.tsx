@@ -48,7 +48,7 @@ function FilmVideo({ film }: { film: Film }) {
       muted
       loop
       preload="metadata"
-      aria-label={`${film.title} launch film, 20 seconds`}
+      aria-label={`${film.title} launch film, ${film.seconds} seconds`}
       className="aspect-video h-auto w-full rounded-lg border border-zinc-100 bg-zinc-100 dark:border-[#222] dark:bg-[#111]"
     />
   );
@@ -94,7 +94,7 @@ export default function FilmsPageClient() {
               </div>
               <FilmVideo film={film} />
               <p className="mb-3 mt-5 text-sm leading-relaxed text-zinc-600 dark:text-[#a1a1a1]">{film.caption}</p>
-              <a href={film.link} target="_blank" rel="noopener noreferrer" className={`${INLINE_LINK_CLASS} text-sm text-zinc-600 dark:text-zinc-400`}>hotelist.com</a>
+              <a href={film.link} target="_blank" rel="noopener noreferrer" className={`${INLINE_LINK_CLASS} text-sm text-zinc-600 dark:text-zinc-400`}>{new URL(film.link).hostname.replace(/^www\./, '')}</a>
               <details className="mt-5 border-t border-zinc-100 pt-4 dark:border-[#222]">
                 <summary className="cursor-pointer rounded-sm py-1 text-xs text-zinc-600 dark:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400">Transcript</summary>
                 <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-[#a1a1a1]">{film.transcript}</p>
