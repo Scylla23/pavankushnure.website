@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: ProjectPageProps) {
     // layout.tsx already appends "| Pavan Kushnure" via the title template.
     title: project.title,
     description: project.description,
+    alternates: { canonical: `https://pavankushnure.website/projects/${project.slug}` },
   };
 }
 
