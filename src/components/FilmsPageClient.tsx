@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import { ArrowLeft, Home, Moon, Sun } from 'lucide-react';
 import Footer from '@/components/Footer';
 import InquiryForm from '@/components/InquiryForm';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/context/ThemeContext';
-import { films, offer, type Film } from '@/data/films';
+import { films, inspirationFilms, offer, type Film, type InspirationFilm } from '@/data/films';
 
 const LABEL_CLASS = 'text-[10px] sm:text-xs font-mono uppercase tracking-widest text-black dark:text-white';
 const INLINE_LINK_CLASS = '!min-h-0 !min-w-0 rounded-sm underline underline-offset-4 transition-colors hover:text-black dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400';
@@ -51,6 +52,56 @@ function FilmVideo({ film }: { film: Film }) {
       aria-label={`${film.title} launch film, ${film.seconds} seconds`}
       className="aspect-video h-auto w-full rounded-lg border border-zinc-100 bg-zinc-100 dark:border-[#222] dark:bg-[#111]"
     />
+  );
+}
+
+function InspirationSection() {
+  const [selectedFilm, setSelectedFilm] = useState(inspirationFilms[0]);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const selectFilm = (film: InspirationFilm) => {
+    if (film.slug === selectedFilm.slug) return;
+    const video = videoRef.current;
+    const shouldPlay = video && !video.paused && !video.ended
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    video?.pause();
+    // Mount the new player during the click to preserve the playback gesture.
+    flushSync(() => setSelectedFilm(film));
+    if (shouldPlay) void videoRef.current?.play().catch(() => {});
+  };
+
+  return (
+    <section className="mt-12" aria-labelledby="inspiration-heading">
+      <h2 id="inspiration-heading" className={`${LABEL_CLASS} mb-4`}>Inspiration</h2>
+      <div className="mb-4 flex gap-2" role="group" aria-label="Inspiration films">
+        {inspirationFilms.map((film) => (
+          <button
+            key={film.slug}
+            type="button"
+            aria-pressed={film.slug === selectedFilm.slug}
+            onClick={() => selectFilm(film)}
+            className={`rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-widest transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 sm:text-xs ${film.slug === selectedFilm.slug
+              ? 'border-zinc-900 bg-zinc-900 text-white hover:bg-zinc-800 dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200'
+              : 'border-zinc-200 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-[#333] dark:text-zinc-400 dark:hover:bg-[#1a1a1a] dark:hover:text-zinc-100'}`}
+          >
+            {film.title}
+          </button>
+        ))}
+      </div>
+      <video
+        key={selectedFilm.slug}
+        ref={videoRef}
+        src={selectedFilm.video}
+        poster={selectedFilm.poster}
+        width={selectedFilm.width}
+        height={selectedFilm.height}
+        controls
+        playsInline
+        preload="none"
+        aria-label={`${selectedFilm.title} launch film, ${selectedFilm.seconds} seconds`}
+        className="aspect-video h-auto w-full rounded-lg border border-zinc-100 bg-zinc-100 dark:border-[#222] dark:bg-[#111]"
+      />
+    </section>
   );
 }
 
@@ -102,6 +153,8 @@ export default function FilmsPageClient() {
             </article>
           ))}
         </div>
+
+        <InspirationSection />
 
         <section className="mt-12" aria-labelledby="tested-heading">
           <h2 id="tested-heading" className={`${LABEL_CLASS} mb-4`}>Tested like code</h2>

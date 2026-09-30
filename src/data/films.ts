@@ -28,4 +28,44 @@ export const films: Film[] = [
   },
 ];
 
+export interface InspirationFilm {
+  title: string;
+  slug: string;
+  video: string;
+  poster: string;
+  width: number;
+  height: number;
+  seconds: number;
+}
+
+export const inspirationFilms: InspirationFilm[] = [
+  {
+    title: 'Gumroad',
+    slug: 'gumroad',
+    video: '/films/inspiration/gumroad.mp4',
+    poster: '/films/inspiration/gumroad-poster.jpg',
+    width: 1920,
+    height: 1080,
+    seconds: 31,
+  },
+  {
+    title: 'Shopify',
+    slug: 'shopify',
+    video: '/films/inspiration/shopify.mp4',
+    poster: '/films/inspiration/shopify-poster.jpg',
+    width: 1920,
+    height: 1080,
+    seconds: 20,
+  },
+  {
+    title: 'Figma',
+    slug: 'figma',
+    video: '/films/inspiration/figma.mp4',
+    poster: '/films/inspiration/figma-poster.jpg',
+    width: 1920,
+    height: 1080,
+    seconds: 23,
+  },
+];
+
 export const offer = { month: 'October', price: 99, slots: 3, slotsLeft: 3 };
