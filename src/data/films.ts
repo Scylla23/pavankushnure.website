@@ -67,5 +67,3 @@ export const inspirationFilms: InspirationFilm[] = [
     seconds: 23,
   },
 ];
-
-export const offer = { month: 'October', price: 99, slots: 3, slotsLeft: 3 };

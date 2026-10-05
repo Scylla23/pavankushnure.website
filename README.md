@@ -31,7 +31,7 @@ npx serve out    # preview the real static output
 | Skills | `src/components/Stack.tsx` |
 | Contact copy and links | `src/components/Contact.tsx` |
 | Projects, including per-project write-ups | `src/data/projects.ts` |
-| Launch films and the offer's `slotsLeft` | `src/data/films.ts` |
+| Launch films | `src/data/films.ts` |
 | Launch film inquiry form | `src/components/InquiryForm.tsx` |
 | Inquiry route and delivery | `POST /inquiry`, `worker/src/inquiry.ts` |
 | Ask-my-AI chatbot widget | `public/ask-pavan.js`, `public/ask-pavan.css`, backend in `worker/` |

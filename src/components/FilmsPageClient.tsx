@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import InquiryForm from '@/components/InquiryForm';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/context/ThemeContext';
-import { films, inspirationFilms, offer, type Film, type InspirationFilm } from '@/data/films';
+import { films, inspirationFilms, type Film, type InspirationFilm } from '@/data/films';
 
 const LABEL_CLASS = 'text-[10px] sm:text-xs font-mono uppercase tracking-widest text-black dark:text-white';
 const INLINE_LINK_CLASS = '!min-h-0 !min-w-0 rounded-sm underline underline-offset-4 transition-colors hover:text-black dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400';
@@ -177,25 +177,6 @@ export default function FilmsPageClient() {
             <li>I build the film: your real UI recreated in code, a voiceover, music, sound design and your own mascot.</li>
             <li>You get a 1080p, 60 fps MP4, ready to post.</li>
           </ol>
-        </section>
-
-        <section className="mt-12 rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5 dark:border-[#333] dark:bg-[#111] sm:p-6" aria-labelledby="offer-heading">
-          <p className={`${LABEL_CLASS} mb-3`}>{offer.month}</p>
-          <h2 id="offer-heading" className="font-serif text-xl text-black dark:text-white sm:text-2xl">{offer.slots} launch films at ${offer.price} each</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            {offer.slotsLeft === 0
-              ? "October is full. Tell me about your launch and I'll quote the next opening."
-              : `${offer.slotsLeft} of ${offer.slots} slots left`}
-          </p>
-          <ul className="my-5 list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-600 marker:text-zinc-400 dark:text-[#a1a1a1] dark:marker:text-zinc-600">
-            <li>20 to 30 seconds, 1080p at 60 fps</li>
-            <li>Voiceover, music and sound design</li>
-            <li>Your real product, your brand, your own mascot</li>
-            <li>Delivered about a day after you approve the script</li>
-          </ul>
-          <Button className="w-full rounded-full bg-zinc-900 px-6 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 sm:w-auto" asChild>
-            <a href="#inquiry">Tell me about your launch</a>
-          </Button>
         </section>
 
         <section id="inquiry" className="mt-12 scroll-mt-8" aria-labelledby="inquiry-heading">
