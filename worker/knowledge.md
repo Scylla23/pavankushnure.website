@@ -25,7 +25,7 @@ Python, FastAPI, TypeScript, LLMs, MCP, Docker, GitHub Actions.
 
 ## Past roles
 
-- **Naya Studio**, New York, USA (remote) — Software Engineer, Oct 2023 – May 2026.
+- **Naya Studio**, New York, USA (remote) — Full-Stack AI Engineer, Oct 2023 – May 2026.
   React, Node.js, Express, MongoDB, GCP. Universal search over 250K+ files (50 ms keyword via Algolia,
   ~150–200 ms semantic via MongoDB Atlas Vector Search); Stripe billing pipelines with tiered plans and
   team seats; Onshape/Autodesk CAD integrations over OAuth 2.0; an Onshape App Store extension;
@@ -53,9 +53,14 @@ Python, FastAPI, TypeScript, LLMs, MCP, Docker, GitHub Actions.
 
 ## Notable projects
 
-- **GovEngine** (govengine.ai) — governed agent platform: plain-English requests become inspectable,
-  approvable agent graphs executed deterministically; 300-template catalog, AWS/Azure/GCP VM cost
-  monitoring, MCPOne-guarded mode with human approval for side effects.
+- **GovEngine** (govengine.ai) — AI agents that a person approves before they run. Plain-English
+  requests become inspectable agent graphs; approval freezes a version that a deterministic executor
+  runs on demand, on a schedule or on events. Connectors for Gmail, Outlook, Teams, Slack, SharePoint,
+  Google Drive and GitHub behind one deny-by-default scope check, with human confirmation before sends,
+  writes and browser actions. One model gateway across providers with PII and prompt-injection
+  guardrails; MCPOne-governed mode. A capability catalog where companies publish APIs, MCP servers,
+  SSO apps and hosted Docker apps after security review. Shareable agents, a template library, and
+  AWS/Azure/GCP VM cost monitoring without a cloud credential. Pavan is the lead engineer.
 - **MCPOne** (mcpone.ai) — policy-enforced runtime screening every AI request before it reaches a
   model, over REST/gRPC/MCP, with an append-only hash-chained audit ledger; maps a 1,248-rule catalog
   to real enforcement mechanisms and re-tests live guardrails hourly; assessed Awardable by Tradewinds.
