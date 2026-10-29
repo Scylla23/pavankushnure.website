@@ -189,7 +189,7 @@ export default function Header() {
       {/* Bio */}
       <div className="mt-2 px-1 sm:px-0">
         <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-base sm:text-lg">
-          AI engineer. I build LLM systems that hold up in production: a gateway that puts every model provider behind one policy, guardrails that catch PII and prompt injection while the request is still in flight, agent workflows with real budget and approval limits, and evals that tell you when a prompt change broke something. Three years of full-stack product work before that (React, Node, FastAPI, Postgres, GCP), which is why these systems arrive with auth, billing and observability already wired in.
+          AI engineer. I build LLM systems that hold up in production: a gateway that puts every model provider behind one policy, guardrails that catch PII and prompt injection while the request is still in flight, agents a person approves before they touch Gmail, Slack or GitHub, and evals that tell you when a prompt change broke something. Underneath that is three years of full-stack product work (React, Node, MongoDB, GCP), the last of it already shipping semantic search and AI features at Naya Studio, which is why these systems arrive with auth, billing and observability already wired in.
         </p>
       </div>
     </motion.header>
