@@ -21,7 +21,7 @@ const experiences = [
   },
   {
     company: "Naya Studio",
-    role: "Software Engineer",
+    role: "Full-Stack AI Engineer",
     period: "Oct 2023 - May 2026",
     location: "New York, USA (Remote)",
     companyUrl: "https://naya.studio",
