@@ -17,23 +17,26 @@ export const projects: Project[] = [
   {
     title: "GovEngine",
     slug: "govengine",
-    description: "A governed agent platform that turns plain-English work into approved, deterministic graphs, with authored task and monitoring agents plus a governed MCPOne mode.",
+    description: "AI agents that a person approves before they run. You describe the work in plain English, review the plan GovEngine drafts, and it runs exactly that plan on the tools your team already uses.",
     longDescription: [
-      "GovEngine keeps model judgment out of runtime control flow. You describe the work in plain English, inspect the typed graph it produces and approve it before a manual, scheduled or event-driven run.",
-      "The model is used only while the graph is being designed. It can restate the request and ask for missing details before drafting. Approval freezes an immutable version; a deterministic executor then walks that exact graph.",
-      "The catalog covers 300 task and monitoring templates across 30 categories. Fourteen currently have fully authored workflows, including Federal Register and cyber-threat monitoring, regulatory tracking, document review and policy-waiver expiration.",
-      "I recently built its cloud VM monitoring subsystem: a customer-hosted, outbound-only collector for AWS, Azure and GCP. It records inventory, utilization and per-owner cost, then reports idle and rightsizing recommendations with estimated savings. GovEngine never receives a cloud credential, and it does not apply those recommendations automatically.",
-      "In governed mode, every LLM call passes through MCPOne's guardrails. In that mode, catalog runs also use MCPOne for authorization, tool mediation and output screening, with evidence references stored on each run. Connector effects go through one deny-by-default, scope-checking funnel; a human can be required to approve side effects before they leave the system."
+      "GovEngine is live at govengine.ai. You describe a task in plain English and it drafts a typed graph of steps, asks about anything missing, and shows every outside action before you approve it. Approval freezes that version, and a deterministic executor runs exactly that graph, either manually, on a schedule or when an event arrives. The model helps design the graph but does not decide what runs.",
+      "Agents work through Gmail, Outlook, Teams, Slack, SharePoint, Google Drive and GitHub. Every connector call passes one deny-by-default scope check, and a person can be required to confirm a send or a write before it leaves the system. When a task needs a website that has no API, an agent can drive a real browser in an isolated, encrypted session, and it still asks before acting.",
+      "Every model call goes through a gateway that applies one policy across providers (currently OpenAI and Google Gemini), with guardrails for PII and prompt injection and a record of usage and cost. In governed mode, MCPOne adds authorization, tool mediation and output screening, and stores evidence on each run.",
+      "Companies can also bring their own products onto GovEngine. A team can publish an API, an MCP server or a single sign-on app, upload an agent package, or have GovEngine host its app as a reviewed Docker container that administrators can start and stop. Every submission is validated and security reviewed before an administrator publishes it to the capability catalog, where organizations can activate it for their people and their agents.",
+      "Teams can start from a template library and share agents with each other. Installing a shared agent gives you your own copy wired to your own connections, so the publisher's credentials stay with the publisher. GovEngine also tracks AWS, Azure and GCP VM cost and utilization without holding a cloud credential.",
+      "I'm the lead engineer on GovEngine at Bravent, working across the product, the model gateway and production operations."
     ],
     features: [
-      "Plain-English request to an inspectable agent graph",
-      "Immutable approval and deterministic execution",
-      "Fourteen fully authored agents in a 300-template catalog",
-      "Manual, scheduled and event-triggered runs",
-      "AWS, Azure and GCP VM cost and utilization monitoring",
-      "MCPOne controls with human approval for side effects"
+      "Plain-English request to an inspectable, approved agent graph",
+      "Immutable versions and deterministic execution on demand, on a schedule or on events",
+      "Gmail, Outlook, Teams, Slack, SharePoint, Drive and GitHub connectors",
+      "Human confirmation before sends, writes and browser actions",
+      "One model gateway across providers with PII and prompt-injection guardrails",
+      "A capability catalog where companies publish APIs, MCP servers, SSO apps and hosted Docker apps",
+      "Security review before anything reaches the catalog",
+      "Shareable agents and a template library"
     ],
-    technologies: ["TypeScript", "Next.js", "PostgreSQL", "Redis", "BullMQ", "MCP", "Docker"],
+    technologies: ["TypeScript", "Next.js", "PostgreSQL", "Redis", "BullMQ", "MCP", "Docker", "Keycloak"],
     thumbnail: "/thumbnails/govengine.jpg",
     links: {
       visit: "https://govengine.ai"
